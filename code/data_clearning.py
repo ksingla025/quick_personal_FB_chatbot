@@ -4,9 +4,13 @@
 import glob
 from bs4 import BeautifulSoup
 
-DATA = "./fb_data/messages/*.html"
+from seq2seq-chatbot.data.twitter import data
 
-out_file = "./seq2seq-chatbot/data/fb_chat/"
+DATA = "./data/messages/*.html"
+
+out_files = "./seq2seq-chatbot/data/fb_chat/"
+out_text_file = open(out_files+"fb_chat.txt",'w')
+
 
 files = glob.glob(DATA)
 
@@ -39,10 +43,14 @@ for file in files:
 				others = others + 1
 
 			if dialogue.strip() != '':
-				print(dialogue)
+				out_text_file.write(dialogue+"\n")
 	except:
 		continue
 #	total = total + len(soup.find_all('p'))
+out_text_file.close()
+
+data.FILENAME = out_text_file+"fb_chat.txt"
+data.process_data()
 
 print("#total messages", total)
 print("#my_messages", mine)
